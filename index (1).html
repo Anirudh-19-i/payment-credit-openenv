@@ -1,0 +1,1180 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Credit Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: auto;
+        }
+        
+        .title {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .title h1 {
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #cbd5e1;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 20px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+        
+        .card h2 {
+            color: #38bdf8;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+        
+        .state-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .state-box,
+        .mini-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px;
+        }
+        
+        .label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        
+        .value {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #f8fafc;
+        }
+        
+        .top-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge.low {
+            background: rgba(34, 197, 94, 0.18);
+            color: #86efac;
+        }
+        
+        .badge.medium {
+            background: rgba(250, 204, 21, 0.18);
+            color: #fde68a;
+        }
+        
+        .badge.high {
+            background: rgba(239, 68, 68, 0.18);
+            color: #fca5a5;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        
+        .btn-reset {
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn-reset:hover {
+            opacity: 0.95;
+        }
+        
+        .reward-box {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.25);
+        }
+        
+        .reward-label {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+        
+        .reward-value {
+            font-size: 2.4rem;
+            font-weight: bold;
+        }
+        
+        .reward-positive {
+            color: #22c55e;
+        }
+        
+        .reward-negative {
+            color: #ef4444;
+        }
+        
+        .reward-neutral {
+            color: #facc15;
+        }
+        
+        .decision-info {
+            margin-top: 8px;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+        
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+        }
+        
+        .full-width {
+            grid-column: span 2;
+        }
+        
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .list-item {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 12px;
+            border-radius: 10px;
+        }
+        
+        .leaderboard-item,
+        .audit-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 12px;
+            border-radius: 10px;
+        }
+        
+        .left-col {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .action-name,
+        .rule-name {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+        
+        .muted {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+        
+        .score-pos {
+            color: #22c55e;
+            font-weight: bold;
+        }
+        
+        .score-neg {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        
+        .score-neutral {
+            color: #facc15;
+            font-weight: bold;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .status-pass {
+            background: rgba(34, 197, 94, 0.18);
+            color: #86efac;
+        }
+        
+        .status-warning {
+            background: rgba(239, 68, 68, 0.18);
+            color: #fca5a5;
+        }
+        
+        .status {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            display: none;
+            font-size: 0.9rem;
+        }
+        
+        .status.ok {
+            display: block;
+            background: rgba(34, 197, 94, 0.14);
+            color: #86efac;
+        }
+        
+        .status.err {
+            display: block;
+            background: rgba(239, 68, 68, 0.14);
+            color: #fca5a5;
+        }
+        
+        .helper {
+            color: #94a3b8;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+        
+        .section-title {
+            margin: 16px 0 10px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 960px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .full-width {
+                grid-column: span 1;
+            }
+            .state-grid,
+            .action-grid,
+            .top-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>Payment Credit Dashboard</h1>
+            <p class="subtitle">Explainable RL-style decision system with policy checks, leaderboard, and audit trail.</p>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <h2>Current Transaction</h2>
+
+                <div class="top-summary">
+                    <div class="mini-box">
+                        <div class="label">Risk Band</div>
+                        <div id="riskBandBox" class="value">--</div>
+                    </div>
+                    <div class="mini-box">
+                        <div class="label">Recommended Action</div>
+                        <div id="recommendedActionBox" class="value">--</div>
+                    </div>
+                    <div class="mini-box">
+                        <div class="label">Transaction Status</div>
+                        <div id="transactionBox" class="value">Waiting</div>
+                    </div>
+                </div>
+
+                <div id="stateGrid" class="state-grid">
+                    <p class="helper">No transaction loaded yet. Click "Reset Environment" to fetch one sample.</p>
+                </div>
+
+                <div class="section-title">Top Reasons</div>
+                <div id="reasonsList" class="list">
+                    <p class="helper">No explanation available yet.</p>
+                </div>
+
+                <div id="statusBox" class="status"></div>
+            </div>
+
+            <div class="card">
+                <h2>Actions</h2>
+                <div class="controls">
+                    <button class="btn-reset" onclick="resetEnvironment()">Reset Environment</button>
+
+                    <div class="reward-box">
+                        <div class="reward-label">Last Reward</div>
+                        <div id="rewardValue" class="reward-value reward-neutral">--</div>
+                        <div id="decisionInfo" class="decision-info">Choose an action to evaluate this transaction.</div>
+                    </div>
+
+                    <div class="action-grid">
+                        <button class="action-btn" onclick="takeStep('approve_card_1')">Approve Card 1</button>
+                        <button class="action-btn" onclick="takeStep('approve_card_2')">Approve Card 2</button>
+                        <button class="action-btn" onclick="takeStep('route_to_debit')">Route to Debit</button>
+                        <button class="action-btn" onclick="takeStep('convert_to_emi')">Convert to EMI</button>
+                        <button class="action-btn" onclick="takeStep('delay_purchase')">Delay Purchase</button>
+                        <button class="action-btn" onclick="takeStep('decline')">Decline</button>
+                    </div>
+
+                    <div class="section-title">Leaderboard</div>
+                    <div id="leaderboardList" class="list">
+                        <p class="helper">Leaderboard appears after testing an action.</p>
+                    </div>
+
+                    <div class="section-title">Policy Checks</div>
+                    <div id="policyList" class="list">
+                        <p class="helper">Policy checks appear after testing an action.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card full-width">
+                <h2>Audit Log</h2>
+                <div id="auditLogList" class="list">
+                    <p class="helper">No audit entries yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://127.0.0.1:8000";
+        let currentTransactionId = null;
+
+        function formatCurrency(value) {
+            return `₹${Number(value).toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
+        }
+
+        function formatPercent(value) {
+            return `${(Number(value) * 100).toFixed(1)}%`;
+        }
+
+        function humanize(text) {
+            return text.replaceAll("_", " ");
+        }
+
+        function scoreClass(score) {
+            if (score > 0) return "score-pos";
+            if (score < 0) return "score-neg";
+            return "score-neutral";
+        }
+
+        function showStatus(message, type = "ok") {
+            const box = document.getElementById("statusBox");
+            box.textContent = message;
+            box.className = `status ${type}`;
+            box.style.display = "block";
+            setTimeout(() => {
+                box.style.display = "none";
+            }, 2500);
+        }
+
+        function renderState(state) {
+            currentTransactionId = state.transaction_id;
+
+            document.getElementById("stateGrid").innerHTML = `
+        <div class="state-box">
+          <div class="label">Transaction ID</div>
+          <div class="value">${state.transaction_id}</div>
+        </div>
+        <div class="state-box">
+          <div class="label">Amount</div>
+          <div class="value">${formatCurrency(state.amount)}</div>
+        </div>
+        <div class="state-box">
+          <div class="label">Credit Score</div>
+          <div class="value">${state.credit_score}</div>
+        </div>
+        <div class="state-box">
+          <div class="label">Available Credit</div>
+          <div class="value">${formatCurrency(state.available_credit)}</div>
+        </div>
+        <div class="state-box">
+          <div class="label">Monthly Spend</div>
+          <div class="value">${formatCurrency(state.monthly_spend)}</div>
+        </div>
+        <div class="state-box">
+          <div class="label">Debt To Income</div>
+          <div class="value">${formatPercent(state.debt_to_income)}</div>
+        </div>
+        <div class="state-box">
+          <div class="label">Payment History</div>
+          <div class="value">${formatPercent(state.payment_history_score)}</div>
+        </div>
+        <div class="state-box">
+          <div class="label">Credit Utilization</div>
+          <div class="value">${formatPercent(state.credit_utilization)}</div>
+        </div>
+        <div class="state-box">
+          <div class="label">Last Payment Date</div>
+          <div class="value">${state.last_payment_date}</div>
+        </div>
+        <div class="state-box">
+          <div class="label">Account Age</div>
+          <div class="value">${state.account_age_months} months</div>
+        </div>
+      `;
+
+            document.getElementById("transactionBox").textContent = `Loaded (${state.transaction_id})`;
+        }
+
+        function renderReward(reward, action) {
+            const rewardEl = document.getElementById("rewardValue");
+            rewardEl.textContent = reward.toFixed(4);
+
+            if (reward > 0) rewardEl.className = "reward-value reward-positive";
+            else if (reward < 0) rewardEl.className = "reward-value reward-negative";
+            else rewardEl.className = "reward-value reward-neutral";
+
+            document.getElementById("decisionInfo").textContent = `Action tested: ${humanize(action)}`;
+        }
+
+        function renderRiskBand(riskBand) {
+            const box = document.getElementById("riskBandBox");
+            box.innerHTML = `<span class="badge ${riskBand}">${riskBand}</span>`;
+        }
+
+        function renderRecommendedAction(action) {
+            document.getElementById("recommendedActionBox").textContent = humanize(action);
+        }
+
+        function renderReasons(reasons) {
+            const el = document.getElementById("reasonsList");
+            if (!reasons || reasons.length === 0) {
+                el.innerHTML = `<p class="helper">No explanation available yet.</p>`;
+                return;
+            }
+
+            el.innerHTML = reasons.map(reason => `
+        <div class="list-item">${reason}</div>
+      `).join("");
+        }
+
+        function renderLeaderboard(leaderboard) {
+            const el = document.getElementById("leaderboardList");
+            if (!leaderboard || leaderboard.length === 0) {
+                el.innerHTML = `<p class="helper">Leaderboard appears after testing an action.</p>`;
+                return;
+            }
+
+            el.innerHTML = leaderboard.map((item, index) => `
+        <div class="leaderboard-item">
+          <div class="left-col">
+            <div class="action-name">#${index + 1} ${humanize(item.action)}</div>
+            <div class="muted">Ranked action recommendation</div>
+          </div>
+          <div class="${scoreClass(item.reward)}">
+            ${item.reward > 0 ? '+' : ''}${item.reward.toFixed(4)}
+          </div>
+        </div>
+      `).join("");
+        }
+
+        function renderPolicyChecks(policyChecks) {
+            const el = document.getElementById("policyList");
+            if (!policyChecks || policyChecks.length === 0) {
+                el.innerHTML = `<p class="helper">Policy checks appear after testing an action.</p>`;
+                return;
+            }
+
+            el.innerHTML = policyChecks.map(item => `
+        <div class="list-item">
+          <div class="rule-name">${humanize(item.rule)}</div>
+          <div style="margin:8px 0;">
+            <span class="status-badge ${item.status === 'pass' ? 'status-pass' : 'status-warning'}">
+              ${item.status}
+            </span>
+          </div>
+          <div class="muted">${item.message}</div>
+        </div>
+      `).join("");
+        }
+
+        async function renderAuditLog() {
+            const el = document.getElementById("auditLogList");
+
+            try {
+                const response = await fetch(`${API_BASE}/audit-log`);
+                if (!response.ok) throw new Error("Failed to fetch audit log");
+
+                const logs = await response.json();
+
+                if (!logs.length) {
+                    el.innerHTML = `<p class="helper">No audit entries yet.</p>`;
+                    return;
+                }
+
+                const reversed = [...logs].reverse();
+
+                el.innerHTML = reversed.map(item => `
+          <div class="audit-item">
+            <div class="left-col">
+              <div class="action-name">${humanize(item.decision)}</div>
+              <div class="muted">${item.transaction_id} • ${new Date(item.timestamp).toLocaleString()}</div>
+              <div class="muted">Risk: ${item.risk_band} • Recommended: ${humanize(item.recommended_action)}</div>
+            </div>
+            <div class="${scoreClass(item.reward)}">
+              ${item.reward > 0 ? '+' : ''}${item.reward.toFixed(4)}
+            </div>
+          </div>
+        `).join("");
+            } catch (error) {
+                el.innerHTML = `<p class="helper">Unable to load audit log.</p>`;
+            }
+        }
+
+        async function resetEnvironment() {
+            try {
+                const response = await fetch(`${API_BASE}/reset`, {
+                    method: "POST"
+                });
+                if (!response.ok) throw new Error("Failed to reset environment");
+
+                const state = await response.json();
+                renderState(state);
+
+                document.getElementById("rewardValue").textContent = "--";
+                document.getElementById("rewardValue").className = "reward-value reward-neutral";
+                document.getElementById("decisionInfo").textContent = "Choose an action to evaluate this transaction.";
+                document.getElementById("riskBandBox").textContent = "--";
+                document.getElementById("recommendedActionBox").textContent = "--";
+                document.getElementById("reasonsList").innerHTML = `<p class="helper">No explanation available yet.</p>`;
+                document.getElementById("leaderboardList").innerHTML = `<p class="helper">Leaderboard appears after testing an action.</p>`;
+                document.getElementById("policyList").innerHTML = `<p class="helper">Policy checks appear after testing an action.</p>`;
+
+                await renderAuditLog();
+                showStatus(`Loaded transaction ${state.transaction_id}`, "ok");
+            } catch (error) {
+                showStatus(error.message, "err");
+            }
+        }
+
+        async function loadCurrentState() {
+            try {
+                const response = await fetch(`${API_BASE}/state`);
+                if (!response.ok) return;
+
+                const state = await response.json();
+                renderState(state);
+            } catch (error) {}
+        }
+
+        async function takeStep(decision) {
+            try {
+                if (!currentTransactionId) {
+                    showStatus("Please reset environment first.", "err");
+                    return;
+                }
+
+                const response = await fetch(`${API_BASE}/step`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        decision
+                    })
+                });
+
+                if (!response.ok) throw new Error("Failed to evaluate decision");
+
+                const result = await response.json();
+
+                renderState(result.state);
+                renderReward(result.reward, decision);
+                renderRiskBand(result.risk_band);
+                renderRecommendedAction(result.recommended_action);
+                renderReasons(result.reasons);
+                renderLeaderboard(result.leaderboard);
+                renderPolicyChecks(result.policy_checks);
+                await renderAuditLog();
+
+                showStatus(
+                    `Reward ${result.reward.toFixed(4)} • Risk ${result.risk_band} • Recommended ${humanize(result.recommended_action)}`,
+                    "ok"
+                );
+            } catch (error) {
+                showStatus(error.message, "err");
+            }
+        }
+
+        loadCurrentState();
+        renderAuditLog();
+    </script>
+</body>
+
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Credit Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .title {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .title h1 {
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #cbd5e1;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 20px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+            margin-bottom: 20px;
+        }
+        
+        .card h2 {
+            color: #38bdf8;
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+        }
+        
+        .state-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        
+        .state-box,
+        .mini-box,
+        .list-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px;
+        }
+        
+        .label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        
+        .value {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .pill {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        
+        .low {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+        
+        .medium {
+            background: rgba(250, 204, 21, 0.18);
+            color: #fde68a;
+        }
+        
+        .high {
+            background: rgba(239, 68, 68, 0.18);
+            color: #fca5a5;
+        }
+        
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-1px);
+        }
+        
+        .primary {
+            background: #38bdf8;
+            color: #082f49;
+        }
+        
+        .secondary {
+            background: #1e293b;
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .action-btn {
+            background: #334155;
+            color: #fff;
+        }
+        
+        .action-btn:hover {
+            background: #475569;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        li:last-child {
+            border-bottom: none;
+        }
+        
+        .good {
+            color: #86efac;
+            font-weight: 700;
+        }
+        
+        .bad {
+            color: #fca5a5;
+            font-weight: 700;
+        }
+        
+        .reward {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f8fafc;
+        }
+        
+        .muted {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+        
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+        
+        .history-item {
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+        }
+        
+        .history-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-transform: capitalize;
+        }
+        
+        .right-col {
+            position: sticky;
+            top: 20px;
+            align-self: start;
+        }
+        
+        @media (max-width: 980px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .hero-row,
+            .state-grid {
+                grid-template-columns: 1fr;
+            }
+            .right-col {
+                position: static;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>Payment Credit Dashboard</h1>
+            <div class="subtitle">Evaluate multiple actions on the same transaction until you reset.</div>
+        </div>
+
+        <div class="dashboard">
+            <div>
+                <div class="card">
+                    <h2>Current Transaction</h2>
+                    <div class="hero-row">
+                        <div class="mini-box">
+                            <div class="label">Transaction ID</div>
+                            <div class="value mono" id="transaction_id">—</div>
+                        </div>
+                        <div class="mini-box">
+                            <div class="label">Risk Band</div>
+                            <div id="risk_band_wrap"><span class="pill" id="risk_band">—</span></div>
+                        </div>
+                        <div class="mini-box">
+                            <div class="label">Recommended Action</div>
+                            <div class="value" id="recommended_action">—</div>
+                        </div>
+                    </div>
+
+                    <div class="state-grid">
+                        <div class="state-box">
+                            <div class="label">Amount</div>
+                            <div class="value" id="amount">—</div>
+                        </div>
+                        <div class="state-box">
+                            <div class="label">Credit Score</div>
+                            <div class="value" id="credit_score">—</div>
+                        </div>
+                        <div class="state-box">
+                            <div class="label">Available Credit</div>
+                            <div class="value" id="available_credit">—</div>
+                        </div>
+                        <div class="state-box">
+                            <div class="label">Monthly Spend</div>
+                            <div class="value" id="monthly_spend">—</div>
+                        </div>
+                        <div class="state-box">
+                            <div class="label">Debt To Income</div>
+                            <div class="value" id="debt_to_income">—</div>
+                        </div>
+                        <div class="state-box">
+                            <div class="label">Payment History</div>
+                            <div class="value" id="payment_history">—</div>
+                        </div>
+                        <div class="state-box">
+                            <div class="label">Credit Utilization</div>
+                            <div class="value" id="credit_utilization">—</div>
+                        </div>
+                        <div class="state-box">
+                            <div class="label">Last Payment Date</div>
+                            <div class="value" id="last_payment_date">—</div>
+                        </div>
+                        <div class="state-box">
+                            <div class="label">Account Age</div>
+                            <div class="value" id="account_age_months">—</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Actions</h2>
+                    <div class="btn-row" style="margin-bottom: 12px;">
+                        <button class="primary" onclick="resetEnvironment()">Reset Environment</button>
+                    </div>
+                    <div class="btn-row">
+                        <button class="action-btn" onclick="takeAction('approve_card_1')">Approve Card 1</button>
+                        <button class="action-btn" onclick="takeAction('approve_card_2')">Approve Card 2</button>
+                        <button class="action-btn" onclick="takeAction('route_to_debit')">Route to Debit</button>
+                        <button class="action-btn" onclick="takeAction('convert_to_emi')">Convert to EMI</button>
+                        <button class="action-btn" onclick="takeAction('delay_purchase')">Delay Purchase</button>
+                        <button class="action-btn" onclick="takeAction('decline')">Decline</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Reasons</h2>
+                    <ul id="reasons_list">
+                        <li class="muted">No evaluation yet.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2>Action Leaderboard</h2>
+                    <ul id="leaderboard_list">
+                        <li class="muted">No evaluation yet.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2>Policy Checks</h2>
+                    <ul id="policy_checks_list">
+                        <li class="muted">No evaluation yet.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="right-col">
+                <div class="card">
+                    <h2>Last Reward</h2>
+                    <div class="reward" id="last_reward">—</div>
+                    <div class="muted" id="last_action">Action tested: —</div>
+                </div>
+
+                <div class="card">
+                    <h2>Action History</h2>
+                    <div id="audit_log">
+                        <div class="muted">No actions taken yet.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = "";
+
+        const money = (n) =>
+            typeof n === "number" ?
+            new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 2
+            }).format(n) :
+            "—";
+
+        function setText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value ? value : "—";
+        }
+
+        function setRiskBand(band) {
+            const el = document.getElementById("risk_band");
+            el.textContent = band || "—";
+            el.className = "pill " + (band || "");
+        }
+
+        function renderState(state) {
+            if (!state) return;
+            setText("transaction_id", state.transaction_id);
+            setText("amount", money(state.amount));
+            setText("credit_score", state.credit_score);
+            setText("available_credit", money(state.available_credit));
+            setText("monthly_spend", money(state.monthly_spend));
+            setText("debt_to_income", `${state.debt_to_income}%`);
+            setText("payment_history", `${state.payment_history}%`);
+            setText("credit_utilization", `${state.credit_utilization}%`);
+            setText("last_payment_date", state.last_payment_date);
+            setText("account_age_months", `${state.account_age_months} months`);
+        }
+
+        function renderReasons(reasons = []) {
+            const box = document.getElementById("reasons_list");
+            if (!reasons.length) {
+                box.innerHTML = `<li class="muted">No evaluation yet.</li>`;
+                return;
+            }
+            box.innerHTML = reasons.map(r => `<li>${r}</li>`).join("");
+        }
+
+        function renderLeaderboard(items = []) {
+            const box = document.getElementById("leaderboard_list");
+            if (!items.length) {
+                box.innerHTML = `<li class="muted">No evaluation yet.</li>`;
+                return;
+            }
+            box.innerHTML = items.map((x, i) => `
+        <li>
+          <strong>#${i + 1} ${x.action.replaceAll('_', ' ')}</strong>
+          <span style="float:right">${x.reward.toFixed(4)}</span>
+        </li>
+      `).join("");
+        }
+
+        function renderPolicyChecks(items = []) {
+            const box = document.getElementById("policy_checks_list");
+            if (!items.length) {
+                box.innerHTML = `<li class="muted">No evaluation yet.</li>`;
+                return;
+            }
+            box.innerHTML = items.map(x => `
+        <li>
+          <div><strong>${x.name}</strong> — <span class="${x.passed ? 'good' : 'bad'}">${x.passed ? 'PASS' : 'FAIL'}</span></div>
+          <div class="muted">${x.detail}</div>
+        </li>
+      `).join("");
+        }
+
+        async function loadAuditLog() {
+            const res = await fetch(`${API}/audit-log`);
+            const data = await res.json();
+            const box = document.getElementById("audit_log");
+
+            if (!data.length) {
+                box.innerHTML = `<div class="muted">No actions taken yet.</div>`;
+                return;
+            }
+
+            box.innerHTML = data.slice().reverse().map(item => `
+        <div class="history-item">
+          <div class="history-top">
+            <span>${item.action.replaceAll('_', ' ')}</span>
+            <span>${item.reward.toFixed(4)}</span>
+          </div>
+          <div class="muted">${item.timestamp} • ${item.transaction_id}</div>
+          <div class="muted">Risk: ${item.risk_band} • Recommended: ${item.recommended_action.replaceAll('_', ' ')}</div>
+        </div>
+      `).join("");
+        }
+
+        async function loadState() {
+            const res = await fetch(`${API}/state`);
+            const state = await res.json();
+            renderState(state);
+            setRiskBand("");
+            setText("recommended_action", "—");
+            renderReasons([]);
+            renderLeaderboard([]);
+            renderPolicyChecks([]);
+            setText("last_reward", "—");
+            setText("last_action", "Action tested: —");
+            await loadAuditLog();
+        }
+
+        async function resetEnvironment() {
+            const res = await fetch(`${API}/reset`, {
+                method: "POST"
+            });
+            const state = await res.json();
+            renderState(state);
+            setRiskBand("");
+            setText("recommended_action", "—");
+            renderReasons([]);
+            renderLeaderboard([]);
+            renderPolicyChecks([]);
+            setText("last_reward", "—");
+            setText("last_action", "Action tested: —");
+            await loadAuditLog();
+        }
+
+        async function takeAction(action) {
+            const res = await fetch(`${API}/step`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    action
+                })
+            });
+
+            const data = await res.json();
+
+            renderState(data.state);
+            setRiskBand(data.risk_band);
+            setText("recommended_action", data.recommended_action.replaceAll("_", " "));
+            renderReasons(data.reasons || []);
+            renderLeaderboard(data.leaderboard || []);
+            renderPolicyChecks(data.policy_checks || []);
+            setText("last_reward", Number(data.reward).toFixed(4));
+            setText("last_action", `Action tested: ${data.action.replaceAll("_", " ")}`);
+            await loadAuditLog();
+        }
+
+        loadState();
+    </script>
+</body>
+
+</html>
