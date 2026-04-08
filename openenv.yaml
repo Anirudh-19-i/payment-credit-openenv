@@ -1,0 +1,49 @@
+name: payment_credit_env
+display_name: Payment Credit OpenEnv
+description: >
+  Mini-RL environment for payment credit decisioning and routing. Agents choose among
+  card approvals, debit routing, EMI conversion, delay, or decline for a transaction
+  using rich credit and risk features.
+
+version: "0.2.0"
+
+entrypoint:
+  type: http
+  url: /  # FastAPI app root; API routes exposed under /state, /reset, /step, /audit-log
+
+# Observation and action schemas are defined in the FastAPI app via Pydantic models.
+# This section is mainly for metadata and task definitions.
+
+tasks:
+  - id: approval_detection_easy
+    display_name: "Easy – Approval Detection"
+    description: >
+      Single-step task: given a transaction, the agent chooses an action. The grader
+      rewards correct approvals/declines based on simple credit score and DTI thresholds.
+    difficulty: easy
+
+  - id: risk_routing_medium
+    display_name: "Medium – Risk-Aware Routing"
+    description: >
+      Single-step task: the agent must pick the safest routing (debit/EMI/delay/decline)
+      for medium-risk profiles, balancing risk control and customer convenience.
+    difficulty: medium
+
+  - id: limit_optimization_hard
+    display_name: "Hard – Limit & Behavior Optimization"
+    description: >
+      Multi-feature task: the agent must pick the action that improves long-term credit
+      health for high-risk profiles, considering utilization, DTI, and payment history.
+    difficulty: hard
+
+metadata:
+  tags:
+    - openenv
+    - fintech
+    - credit
+    - rl-environment
+    - explainable-ai
+  authors:
+    - name: "Anirudh Reddy"
+      handle: "Anirudhreddy19"
+  license: "mit"
